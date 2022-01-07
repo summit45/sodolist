@@ -33,9 +33,10 @@ const Auth = () => {
     }
 
     const toggleAccount=() => setNewAccount(prev => !prev);
-
+    
     return (
         <div>
+            <p>LoginPage</p>
             <form onSubmit={ onSubmit }>
                 <input 
                     name="email" 

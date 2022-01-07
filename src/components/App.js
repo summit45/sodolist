@@ -4,29 +4,37 @@ import { authService } from '../fbase.js';
 
 function App() {
   const [init, setInit] = useState(false);
-  const [isLoggedIn, setisLoggedIn] = useState(false);
+  const [userObj, setUserObj] = useState(null); // null로 해도 되는지
 
-  useEffect ( () => {
+  useEffect(() => {
     authService.onAuthStateChanged((user) => {
-      if (user){
-        setisLoggedIn(true);
-      }
-      else{
-        setisLoggedIn(false);
+      if (user) {
+        setUserObj({
+          displayName: user.displayName,
+          uid: user.uid,
+          updateProfile: (args) => user.updateProfile(args),
+        });
       }
       setInit(true);
     });
   }, []);
-  return(
+
+  return (
     <>
-      {init ? <AppRouter isLoggedIn={isLoggedIn} /> :  "Initializing..."}
+      {init ? (
+        <AppRouter
+          isLoggedIn={Boolean(userObj)}
+          userObj={userObj}
+        />
+      ) : (
+        "Initializing..."
+      )}
       <br></br>
       <br></br>
       <br></br>
       <footer>&copy; LeeSuMin {new Date().getFullYear()} </footer>
     </>
-
-  ); 
+  );
 }
 
 export default App;
